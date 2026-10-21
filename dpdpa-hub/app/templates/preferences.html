@@ -1,3 +1,0 @@
-{% extends "public_base.html" %}{% block body %}<div class="card"><h1>Your privacy choices</h1><p>Choose a notice to review or withdraw your consent.</p>
-{% for s in slugs %}<p><a href="/c/{{ s }}">Give or change consent: {{ s }}</a><br><a href="/withdraw/{{ s }}">Withdraw consent: {{ s }}</a></p>{% else %}<p>No notices are published.</p>{% endfor %}
-<p><a href="/dsr">Ask to see, correct or erase your data</a></p></div>{% endblock %}

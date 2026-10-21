@@ -1,5 +1,0 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{% block title %}{{ org_name }}{% endblock %}</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
-<body><div class="public"><div class="head"><img src="{{ url_for('static', filename='logo.png') }}" alt="{{ org_name }}"><div><b>{{ org_name }}</b><br><span style="color:#5A6B80">Your data, your choices</span></div></div>
-{% with msgs = get_flashed_messages(with_categories=true) %}{% for cat, m in msgs %}<div class="flash {{ cat }}">{{ m }}</div>{% endfor %}{% endwith %}
-{% block body %}{% endblock %}</div></body></html>

@@ -1,5 +1,0 @@
-{% extends "public_base.html" %}{% block body %}<div class="card"><h1>Consent receipt {{ e.receipt_id }}</h1>
-<p><b>Recorded:</b> {{ fmt_ist(e.ts) }} IST<br><b>Person:</b> {{ e.principal_masked }}<br><b>Notice:</b> {{ e.notice_slug }} version {{ e.notice_version }}<br><b>Event:</b> {{ e.event }}<br><b>Channel:</b> {{ e.channel }}</p>
-<h2>Agreed</h2>{% for c in split(e.granted) %}<p>{{ purposes[c].name if c in purposes else c }}</p>{% else %}<p>Nothing</p>{% endfor %}
-<h2>Not agreed</h2>{% for c in split(e.declined) %}<p>{{ purposes[c].name if c in purposes else c }}</p>{% else %}<p>Nothing</p>{% endfor %}
-<p class="help">Record fingerprint: {{ e.hash }}</p></div>{% endblock %}

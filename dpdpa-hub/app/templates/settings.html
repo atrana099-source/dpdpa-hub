@@ -1,5 +1,0 @@
-{% extends "base.html" %}{% block body %}<h1>Settings</h1><p class="sub">These details appear on notices and public pages.</p>
-<form method="post" class="card" style="max-width:560px"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-{% for k, label, val in keys %}<label>{{ label }}</label><input name="{{ k }}" value="{{ val or '' }}">{% endfor %}
-<div class="help">The response period is a configurable setting. Confirm the figure with Legal against the final DPDP Rules.</div>
-<div style="margin-top:14px"><button>Save</button></div></form>{% endblock %}

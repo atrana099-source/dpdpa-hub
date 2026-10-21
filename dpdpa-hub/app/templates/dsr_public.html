@@ -1,8 +1,0 @@
-{% extends "public_base.html" %}{% block body %}
-{% if ref %}<div class="card"><h1>Request received</h1><p>Your reference is <b>{{ ref }}</b>. Keep it safe. We aim to respond within {{ sla }} days.</p><p><a href="/dsr/status">Check status</a></p></div>
-{% else %}<div class="card"><h1>Your data rights</h1><p>Use this form to ask for a summary of your data, a correction, erasure, to raise a grievance, or to nominate someone to act for you.</p>
-<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>What do you need?</label><select name="type" required>{% for t in types %}<option>{{ t }}</option>{% endfor %}</select>
-<label>Your name</label><input name="name" required><label>Email or mobile number</label><input name="contact" required>
-<label>Email or mobile used with us (if different)</label><input name="identifier">
-<label>Details</label><textarea name="description" maxlength="2000"></textarea>
-<p class="help">We may ask you to verify your identity before acting.</p><div style="margin-top:14px"><button>Submit request</button></div></form></div>{% endif %}{% endblock %}

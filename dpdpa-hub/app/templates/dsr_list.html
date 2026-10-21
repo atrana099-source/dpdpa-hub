@@ -1,7 +1,0 @@
-{% extends "base.html" %}{% block body %}<h1>Data principal requests</h1><p class="sub">Access, correction, erasure, grievance and nomination requests.</p>
-<form class="bar" method="get"><select name="filter"><option value="">All</option><option value="open" {{ 'selected' if args.get('filter') == 'open' }}>Open</option><option value="overdue" {{ 'selected' if args.get('filter') == 'overdue' }}>Overdue</option></select>
-<select name="status"><option value="">Any status</option>{% for s in statuses %}<option {{ 'selected' if args.get('status') == s }}>{{ s }}</option>{% endfor %}</select>
-<select name="type"><option value="">Any type</option>{% for t in types %}<option {{ 'selected' if args.get('type') == t }}>{{ t }}</option>{% endfor %}</select><button class="btn alt">Filter</button></form>
-<div class="wrap"><table><tr><th>Ref</th><th>Type</th><th>Name</th><th>Status</th><th>Received</th><th>Due</th><th>Assigned</th></tr>
-{% for r in rows %}<tr><td><a href="/requests/{{ r.id }}"><b>{{ r.ref }}</b></a></td><td>{{ r.type }}</td><td>{{ r.principal_name }}</td><td><span class="pill {{ r.status }}">{{ r.status }}</span></td><td>{{ fmt_date(r.received_at) }}</td>
-<td class="{{ 'late' if r.is_overdue }}">{{ fmt_date(r.due_at) }}{{ ' (overdue)' if r.is_overdue }}</td><td>{{ r.assigned_to }}</td></tr>{% else %}<tr><td colspan="7">No requests.</td></tr>{% endfor %}</table></div>{% endblock %}

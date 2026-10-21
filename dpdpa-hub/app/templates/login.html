@@ -1,7 +1,0 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign in · DPDPA Hub</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body>
-<form class="login" method="post"><img src="{{ url_for('static', filename='logo.png') }}" alt="logo"><h1 style="font-size:22px">DPDPA Hub</h1><p class="sub">Sign in to continue</p>
-{% with msgs = get_flashed_messages(with_categories=true) %}{% for cat, m in msgs %}<div class="flash {{ cat }}">{{ m }}</div>{% endfor %}{% endwith %}
-<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Username</label><input name="username" autocomplete="username" autofocus required>
-<label>Password</label><input name="password" type="password" autocomplete="current-password" required>
-<div style="margin-top:16px"><button style="width:100%">Sign in</button></div></form></body></html>

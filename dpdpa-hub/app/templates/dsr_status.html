@@ -1,4 +1,0 @@
-{% extends "public_base.html" %}{% block body %}<div class="card"><h1>Request status</h1>
-{% if row %}<p><b>{{ row.ref }}</b>: {{ row.type }}<br>Status: <b>{{ row.status }}</b><br>Received: {{ fmt_date(row.received_at) }}<br>Response due: {{ fmt_date(row.due_at) }}</p>
-{% for n in notes %}<p>{{ fmt_ist(n.ts) }}: {{ n.note }}</p>{% endfor %}{% endif %}
-<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Reference</label><input name="ref" required><label>Email or mobile used on the request</label><input name="contact" required><div style="margin-top:14px"><button>Check</button></div></form></div>{% endblock %}

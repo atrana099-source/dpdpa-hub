@@ -1,8 +1,0 @@
-{% extends "base.html" %}{% block body %}<h1>Consent management</h1><p class="sub">Notices, purposes and an append-only consent ledger.</p>
-<div class="grid g4"><div class="kpi"><b>{{ active }}</b><span>People with active consent</span></div><div class="kpi"><b>{{ stats.people }}</b><span>People on record</span></div>
-<div class="kpi"><b>{{ stats.events }}</b><span>Ledger records</span></div><div class="kpi"><b>{{ stats.published }}</b><span>Published notices</span></div></div>
-<div class="grid g2" style="margin-top:18px"><div><h2>Consent by purpose</h2><div class="wrap"><table><tr><th>Purpose</th><th>Active</th></tr>
-{% for p, n in per_purpose %}<tr><td>{{ p.code }} · {{ p.name }}</td><td>{{ n }}</td></tr>{% else %}<tr><td colspan="2">No purposes yet.</td></tr>{% endfor %}</table></div></div>
-<div><h2>Recent activity</h2><div class="wrap"><table><tr><th>When (IST)</th><th>Person</th><th>Event</th><th>Receipt</th></tr>
-{% for e in recent %}<tr><td>{{ fmt_ist(e.ts) }}</td><td>{{ e.principal_masked }}</td><td>{{ e.event }}</td><td>{{ e.receipt_id }}</td></tr>{% else %}<tr><td colspan="4">No consent events yet.</td></tr>{% endfor %}</table></div></div></div>
-{% endblock %}

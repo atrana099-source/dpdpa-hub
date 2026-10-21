@@ -1,5 +1,0 @@
-{% extends "base.html" %}{% block body %}<h1>Breach and incident register</h1><p class="sub">The 72-hour clock for the detailed Board report starts when we become aware of an incident. Legal to confirm the current Rules wording.</p>
-<div class="bar">{% if can('manager') %}<a class="btn" href="/incidents/new">+ Log incident</a>{% endif %}</div>
-<div class="wrap"><table><tr><th>Ref</th><th>Title</th><th>Severity</th><th>Status</th><th>Aware at (IST)</th><th>Board report</th></tr>
-{% for i in rows %}<tr><td><a href="/incidents/{{ i.id }}"><b>{{ i.ref }}</b></a></td><td>{{ i.title }}</td><td><span class="pill {{ i.severity }}">{{ i.severity }}</span></td><td>{{ i.status }}</td><td>{{ fmt_ist(i.aware_at) }}</td>
-<td><span class="timer {{ i.timer.state }}">{{ i.timer.label or 'Pending' }}</span></td></tr>{% else %}<tr><td colspan="6">No incidents logged.</td></tr>{% endfor %}</table></div>{% endblock %}

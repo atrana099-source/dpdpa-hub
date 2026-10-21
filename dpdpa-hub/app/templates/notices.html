@@ -1,8 +1,0 @@
-{% extends "base.html" %}{% block body %}<h1>Consent notices</h1><p class="sub">Published notices are locked. To change one, create a new version. Every consent record points to the exact version and text hash the person saw.</p>
-<div class="bar">{% if can('manager') %}<a class="btn" href="/consent/notices/new">+ New notice</a>{% endif %}</div>
-<div class="wrap"><table><tr><th>Slug</th><th>Version</th><th>Language</th><th>Title</th><th>Purposes</th><th>Status</th><th>Public link</th><th></th></tr>
-{% for n in rows %}<tr><td>{{ n.slug }}</td><td>v{{ n.version }}</td><td>{{ n.language }}</td><td><a href="/consent/notices/{{ n.id }}">{{ n.title }}</a></td><td>{{ n.purpose_codes }}</td><td><span class="pill {{ n.status }}">{{ n.status }}</span></td>
-<td>{% if n.status == 'Published' %}<a href="/c/{{ n.slug }}?lang={{ n.language }}">/c/{{ n.slug }}</a>{% endif %}</td>
-<td style="display:flex;gap:6px">{% if n.status == 'Draft' and can('dpo') %}<form method="post" action="/consent/notices/{{ n.id }}/publish"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn">Publish</button></form>{% endif %}
-{% if can('manager') %}<form method="post" action="/consent/notices/{{ n.id }}/newversion"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn alt">New version</button></form>{% endif %}</td></tr>
-{% else %}<tr><td colspan="8">No notices yet.</td></tr>{% endfor %}</table></div>{% endblock %}
