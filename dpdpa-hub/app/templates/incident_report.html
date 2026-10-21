@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block body %}<h1>Board report draft: {{ i.ref }}</h1>
+<p class="sub">Draft structure for Legal and the DPO to review before filing. Check the final wording of the Rules before use. Print this page to save as PDF.</p>
+<div class="card report"><h2>1. Nature, extent, timing and location</h2><p><b>Incident:</b> {{ i.title }}<br><b>Became aware:</b> {{ fmt_ist(i.aware_at) }} IST<br><b>Occurred:</b> {{ fmt_ist(i.occurred_at) if i.occurred_at else 'Not yet established' }}<br><b>Systems:</b> {{ i.systems or 'To be completed' }}<br><b>Data involved:</b> {{ i.data_categories or 'To be completed' }}</p><p>{{ i.description or '' }}</p>
+<h2>2. Likely impact on affected people</h2><p><b>People affected:</b> {{ i.principals_affected or 'To be completed' }}<br><b>Severity assessed:</b> {{ i.severity }}</p>
+<h2>3. Findings on cause</h2><p>{{ i.root_cause or 'Under investigation' }}</p>
+<h2>4. Measures taken to contain and prevent recurrence</h2><p>{{ i.containment or 'To be completed' }}</p>
+<h2>5. Notifications</h2><p>Board intimated: {{ fmt_ist(i.board_initial_at) if i.board_initial_at else 'Not yet' }}<br>Detailed report filed: {{ fmt_ist(i.board_detailed_at) if i.board_detailed_at else 'Not yet' }}<br>Affected people notified: {{ fmt_ist(i.principals_notified_at) if i.principals_notified_at else 'Not yet' }}</p>
+<h2>Timeline</h2>{% for l in log %}<p>{{ fmt_ist(l.ts) }}: {{ l.note }}</p>{% endfor %}</div>{% endblock %}

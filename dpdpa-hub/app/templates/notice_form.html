@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block body %}<h1>{{ 'Edit' if nid else 'New' }} notice{{ ' (locked)' if locked }}</h1>
+<p class="sub"><a href="/consent/notices">← Back to notices</a>. Placeholders: {org} {dpo_name} {dpo_email} {dsr_url} {withdraw_url}</p>
+<form method="post" class="card" style="max-width:860px"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Slug (used in the public link)</label><input name="slug" value="{{ vals.slug }}" {{ 'readonly' if nid }} required>
+<label>Title</label><input name="title" value="{{ vals.title }}" {{ 'readonly' if locked }} required>
+<label>Language</label><select name="language" {{ 'disabled' if locked }}>{% for l in languages %}<option {{ 'selected' if l == vals.language }}>{{ l }}</option>{% endfor %}</select>
+<label>Notice text</label><textarea name="body" rows="14" {{ 'readonly' if locked }}>{{ vals.body }}</textarea>
+<label>Purposes shown to the person</label>{% set sel = (vals.purpose_codes or '').split(',') %}
+{% for p in purposes %}<label style="display:flex;gap:8px;font-weight:400"><input type="checkbox" style="width:auto" name="purpose_codes" value="{{ p.code }}" {{ 'checked' if p.code in sel }} {{ 'disabled' if locked }}> <span><b>{{ p.name }}</b> ({{ p.code }}): {{ p.description }}</span></label>{% endfor %}
+{% if not locked %}<div style="margin-top:16px"><button>Save draft</button></div>{% endif %}</form>{% endblock %}

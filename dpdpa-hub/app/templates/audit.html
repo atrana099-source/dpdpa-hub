@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block body %}<h1>Audit log</h1><p class="sub">Last 500 actions. Records are only ever added.</p>
+<div class="wrap"><table><tr><th>When (IST)</th><th>User</th><th>Action</th><th>Object</th><th>Detail</th></tr>
+{% for r in rows %}<tr><td>{{ fmt_ist(r.ts) }}</td><td>{{ r.username }}</td><td>{{ r.action }}</td><td>{{ r.entity }} {{ r.entity_id }}</td><td>{{ r.detail }}</td></tr>{% endfor %}</table></div>{% endblock %}

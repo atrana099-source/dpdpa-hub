@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block body %}<h1>Consent ledger</h1><p class="sub">Append-only and hash-chained. People are stored as a salted hash plus a masked label.</p>
+<form class="bar" method="get"><input name="ref" placeholder="Look up one person: email or mobile" value="{{ ref }}" style="max-width:280px">
+<select name="slug"><option value="">All notices</option>{% for s in slugs %}<option {{ 'selected' if s == slug }}>{{ s }}</option>{% endfor %}</select>
+<select name="status"><option value="">Any status</option><option value="active" {{ 'selected' if status == 'active' }}>Active consent</option><option value="none" {{ 'selected' if status == 'none' }}>No active consent</option></select>
+<button class="btn alt">Search</button><div class="spacer"></div>
+{% if can('dpo') %}<a class="btn alt" href="/consent/ledger/export.csv">Export CSV</a>{% endif %}</form>
+<form method="post" action="/consent/ledger/verify" style="margin:8px 0"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn alt">Verify ledger integrity</button></form>
+{% if person %}<div class="card"><b>Current state for {{ ref }}</b>{% for s in person %}<p>{{ s.notice_slug }} v{{ s.notice_version }}: <b>{{ s.event }}</b>. Granted: {{ s.granted|join(', ') or 'none' }}. Declined: {{ s.declined|join(', ') or 'none' }}.</p>{% else %}<p>No records for this person.</p>{% endfor %}</div>{% endif %}
+<p class="help">{{ 'Latest status per person and notice' if showing_latest else 'Full history for this person' }}.</p>
+<div class="wrap"><table><tr><th>When (IST)</th><th>Person</th><th>Notice</th><th>Event</th><th>Granted</th><th>Declined</th><th>Channel</th><th>Receipt</th></tr>
+{% for e in rows %}<tr><td>{{ fmt_ist(e.ts) }}</td><td>{{ e.principal_masked }}</td><td>{{ e.notice_slug }} v{{ e.notice_version }}</td><td>{{ e.event }}</td><td>{{ e.granted }}</td><td>{{ e.declined }}</td><td>{{ e.channel }}</td><td><a href="/receipt/{{ e.receipt_id }}">{{ e.receipt_id }}</a></td></tr>
+{% else %}<tr><td colspan="8">No records.</td></tr>{% endfor %}</table></div>{% endblock %}

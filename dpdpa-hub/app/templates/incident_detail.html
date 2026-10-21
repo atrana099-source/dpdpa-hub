@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block body %}<h1>{{ i.ref }}: {{ i.title }}</h1><p class="sub"><a href="/incidents">← All incidents</a> · <a href="/incidents/{{ i.id }}/report">Board report draft</a></p>
+<div class="grid g3"><div class="card"><b>Detailed Board report</b><p><span class="timer {{ t.state }}">{{ t.label }}</span></p><p class="help">Due {{ fmt_ist(t.due_at) }} (72 hours from awareness)</p></div>
+<div class="card"><b>Initial intimation to Board</b><p>{{ fmt_ist(i.board_initial_at) if i.board_initial_at else 'Not yet done' }}</p></div>
+<div class="card"><b>Affected people notified</b><p>{{ fmt_ist(i.principals_notified_at) if i.principals_notified_at else 'Not yet done' }}</p></div></div>
+{% if can('manager') %}<div class="grid g3" style="margin-top:12px">{% for act, label in [('board_initial','Mark Board intimated'),('board_detailed','Mark detailed report filed'),('principals','Mark people notified')] %}
+<form method="post" class="card"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="{{ act }}"><label>{{ label }}: time (IST, blank = now)</label><input type="datetime-local" name="when"><button class="btn alt" style="margin-top:8px">{{ label }}</button></form>{% endfor %}</div>
+<h2>Details</h2><form method="post" class="card"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="update">
+<div class="grid g2"><div><label>Severity</label><select name="severity">{% for s in severities %}<option {{ 'selected' if s == i.severity }}>{{ s }}</option>{% endfor %}</select></div>
+<div><label>Status</label><select name="status">{% for s in statuses %}<option {{ 'selected' if s == i.status }}>{{ s }}</option>{% endfor %}</select></div></div>
+<label>Description</label><textarea name="description">{{ i.description or '' }}</textarea><label>Data categories</label><input name="data_categories" value="{{ i.data_categories or '' }}">
+<label>People affected</label><input name="principals_affected" value="{{ i.principals_affected or '' }}"><label>Systems</label><input name="systems" value="{{ i.systems or '' }}">
+<label>Root cause</label><textarea name="root_cause">{{ i.root_cause or '' }}</textarea><label>Containment and remedial steps</label><textarea name="containment">{{ i.containment or '' }}</textarea>
+<label>Owner</label><input name="owner" value="{{ i.owner or '' }}"><div style="margin-top:12px"><button>Save details</button></div></form>{% endif %}
+<h2>Timeline</h2><div class="card">{% for l in log %}<p><span class="help">{{ fmt_ist(l.ts) }} · {{ l.username }}</span><br>{{ l.note }}</p>{% endfor %}
+{% if can('manager') %}<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="note"><textarea name="note" required></textarea><button class="btn alt">Add to timeline</button></form>{% endif %}</div>{% endblock %}

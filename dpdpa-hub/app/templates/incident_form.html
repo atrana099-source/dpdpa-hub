@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block body %}<h1>Log an incident</h1><p class="sub"><a href="/incidents">← Back</a>. Times are in IST.</p>
+<form method="post" class="card" style="max-width:760px"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>Title *</label><input name="title" value="{{ vals.get('title','') }}" required>
+<label>When did we become aware? *</label><input type="datetime-local" name="aware_at" value="{{ vals.get('aware_at','') }}" required>
+<label>When did it occur (if known)</label><input type="datetime-local" name="occurred_at" value="{{ vals.get('occurred_at','') }}">
+<label>Severity</label><select name="severity">{% for s in severities %}<option {{ 'selected' if s == vals.get('severity') }}>{{ s }}</option>{% endfor %}</select>
+<label>What happened</label><textarea name="description">{{ vals.get('description','') }}</textarea>
+<label>Data categories involved</label><input name="data_categories" value="{{ vals.get('data_categories','') }}">
+<label>Number / type of people affected</label><input name="principals_affected" value="{{ vals.get('principals_affected','') }}">
+<label>Systems involved</label><input name="systems" value="{{ vals.get('systems','') }}">
+<label>Incident owner</label><input name="owner" value="{{ vals.get('owner','') }}">
+<div style="margin-top:16px"><button>Log incident</button></div></form>{% endblock %}
