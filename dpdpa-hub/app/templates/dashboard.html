@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %}{% block body %}
+<h1>Compliance dashboard</h1><p class="sub">{{ org_name }} · as of {{ fmt_date(today) }}</p>
+<div class="grid g4">
+<div class="kpi"><b>{{ kpi.active_consents }}</b><span>People with active consent ({{ kpi.people }} on record)</span></div>
+<div class="kpi {{ 'danger' if kpi.overdue_dsr else ('warn' if kpi.open_dsr) }}"><b>{{ kpi.open_dsr }}</b><span>Open data principal requests ({{ kpi.overdue_dsr }} overdue)</span></div>
+<div class="kpi {{ 'danger' if kpi.open_incidents }}"><b>{{ kpi.open_incidents }}</b><span>Open incidents</span></div>
+<div class="kpi"><b>{{ kpi.withdrawals }}</b><span>Consent withdrawals recorded</span></div>
+<div class="kpi"><b>{{ kpi.ropa_approved }}/{{ kpi.ropa }}</b><span>ROPA entries approved by Legal</span></div>
+<div class="kpi {{ 'warn' if kpi.gaps_open }}"><b>{{ kpi.gaps_open }}</b><span>Open gaps (of {{ kpi.gaps_total }})</span></div>
+<div class="kpi {{ 'warn' if kpi.actions_overdue }}"><b>{{ kpi.actions_done }}/{{ kpi.actions_total }}</b><span>Actions done ({{ kpi.actions_overdue }} overdue)</span></div>
+<div class="kpi"><b>{{ kpi.retention_approved }}/{{ kpi.retention_total }}</b><span>Retention rules approved</span></div></div>
+<div class="grid g2" style="margin-top:18px"><div><h2>Needs attention</h2>
+{% for level, text, link in attention %}<div class="attn {{ level }}"><span>{{ '⚠' if level == 'danger' else '•' }}</span><a href="{{ link }}">{{ text }}</a></div>
+{% else %}<div class="card">Nothing needs attention right now.</div>{% endfor %}</div>
+<div><h2>Open gaps by priority</h2><div class="card">{% set mx = (by_priority.values()|max) or 1 %}
+{% for k, v in by_priority.items() %}<div class="row-bar"><span>{{ k }}</span><div class="meter"><i style="width:{{ (v / mx * 100)|round }}%;background:{{ {'Critical':'#B83232','High':'#E0902B','Medium':'#C9A227','Low':'#0E9488'}[k] }}"></i></div><b>{{ v }}</b></div>{% endfor %}</div>
+<h2>ROPA review status</h2><div class="card">{% set mr = (ropa_status.values()|max) or 1 %}
+{% for k, v in ropa_status.items() %}<div class="row-bar"><span>{{ k }}</span><div class="meter"><i style="width:{{ (v / mr * 100)|round }}%"></i></div><b>{{ v }}</b></div>{% endfor %}</div></div></div>
+{% if depts %}<h2>Departments</h2><div class="wrap"><table><tr><th>Department</th><th>Rating</th><th>HOD declaration</th><th>Evidence pack</th><th>Key issue</th></tr>
+{% for d in depts %}<tr><td>{{ d.name }}</td><td><span class="pill {{ d.rating }}">{{ d.rating }}</span></td><td>{{ d.declaration_signed }}</td><td>{{ d.evidence_received }}</td><td>{{ d.key_issue }}</td></tr>{% endfor %}</table></div>{% endif %}
+{% endblock %}

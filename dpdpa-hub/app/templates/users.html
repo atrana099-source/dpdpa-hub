@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block body %}<h1>Users</h1>
+<div class="wrap"><table><tr><th>Username</th><th>Name</th><th>Role</th><th>Status</th><th>Last login</th><th></th></tr>
+{% for u in rows %}<tr><td>{{ u.username }}</td><td>{{ u.name }}</td><td><form method="post" style="display:flex;gap:6px"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="role"><input type="hidden" name="id" value="{{ u.id }}">
+<select name="role" style="width:auto">{% for r in roles %}<option {{ 'selected' if r == u.role }}>{{ r }}</option>{% endfor %}</select><button class="btn alt">Set</button></form></td>
+<td>{{ 'Active' if u.active else 'Disabled' }}</td><td>{{ fmt_ist(u.last_login) if u.last_login else '' }}</td>
+<td><form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="toggle"><input type="hidden" name="id" value="{{ u.id }}"><button class="btn alt">{{ 'Disable' if u.active else 'Enable' }}</button></form></td></tr>{% endfor %}</table></div>
+<h2>Add user</h2><form method="post" class="card" style="max-width:560px"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="create">
+<label>Username</label><input name="username" required><label>Full name</label><input name="name"><label>Email</label><input name="email" type="email">
+<label>Role</label><select name="role">{% for r in roles %}<option>{{ r }}</option>{% endfor %}</select>
+<label>Temporary password (min 10 characters)</label><input name="password" type="password" minlength="10" required>
+<div style="margin-top:14px"><button>Create user</button></div></form>
+<h2>Roles</h2><div class="card">{% for r, t in role_help.items() %}<p><b>{{ r }}</b>: {{ t }}</p>{% endfor %}</div>{% endblock %}

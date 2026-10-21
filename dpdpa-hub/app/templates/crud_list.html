@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}{{ ent.title }}{% endblock %}{% block body %}
+<h1>{{ ent.title }}</h1><p class="sub">{{ ent.blurb }}</p>
+<form class="bar" method="get"><input name="q" placeholder="Search…" value="{{ args.get('q','') }}">
+{% for f in ent.fields if f.filt %}<select name="{{ f.name }}"><option value="">{{ f.label }}: all</option>{% for o in options[f.name] %}<option {{ 'selected' if args.get(f.name) == o }}>{{ o }}</option>{% endfor %}</select>{% endfor %}
+<button class="btn alt">Filter</button><div class="spacer"></div>
+<a class="btn alt" href="{{ url_for('crud.export', name=name, **args) }}">Export CSV</a>
+{% if can('manager') and (can('admin') or not ent.admin_write) %}<a class="btn" href="{{ url_for('crud.new', name=name) }}">+ New {{ ent.singular }}</a>{% endif %}</form>
+<div class="wrap"><table><tr>{% for f in ent.fields if f.show %}<th>{{ f.label }}</th>{% endfor %}</tr>
+{% for r in rows %}<tr>{% for f in ent.fields if f.show %}<td>{% if loop.first %}<a href="{{ url_for('crud.edit', name=name, rid=r.id) }}"><b>{{ r[f.name] }}</b></a>
+{% elif f.name in ('priority','rating','status','dpa_status') %}<span class="pill {{ r[f.name] }}">{{ r[f.name] }}</span>{% elif f.type == 'date' %}{{ fmt_date(r[f.name]) }}{% elif f.type == 'int' %}{{ r[f.name] }}%
+{% else %}{{ r[f.name] or '' }}{% endif %}</td>{% endfor %}</tr>
+{% else %}<tr><td colspan="20">No records yet.</td></tr>{% endfor %}</table></div>
+<p class="help">{{ rows|length }} record(s).</p>
+{% if can('manager') and (can('admin') or not ent.admin_write) %}<form method="post" action="{{ url_for('crud.import_csv', name=name) }}" enctype="multipart/form-data" class="bar card" style="margin-top:14px">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><b>Import CSV</b><input type="file" name="file" accept=".csv" required style="width:auto"><button class="btn alt">Import</button>
+<span class="help">Header row must match the column names above (as exported). Existing IDs are updated, new ones added.</span></form>{% endif %}
+{% endblock %}

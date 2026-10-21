@@ -1,0 +1,11 @@
+{% extends "public_base.html" %}{% block body %}
+{% if receipt %}<div class="card"><h1>Thank you</h1><p>Your choices are saved.</p><p><b>Receipt:</b> <a href="/receipt/{{ receipt.receipt_id }}">{{ receipt.receipt_id }}</a></p>
+<p>You agreed to: {{ receipt.granted|join(', ') or 'nothing optional' }}.</p><p>You can change your mind any time at <a href="/withdraw/{{ notice.slug }}">the withdrawal page</a>.</p></div>
+{% else %}<div class="card"><h1>{{ notice.title }}</h1>
+{% if langs|length > 1 %}<p>{% for l in langs %}<a href="?lang={{ l }}">{{ l }}</a> {% endfor %}</p>{% endif %}
+{% for para in body.split('\n\n') %}<p>{{ para }}</p>{% endfor %}
+<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="lang" value="{{ notice.language }}">
+<h2>Your choices</h2><p class="help">Nothing is ticked by default. Notice version {{ notice.version }}.</p>
+{% for p in purposes %}<label class="choice"><input type="checkbox" name="purpose" value="{{ p.code }}"><span><b>{{ p.name }}</b><br>{{ p.description }}{% if p.data_categories %}<br><span class="help">Data used: {{ p.data_categories }}</span>{% endif %}</span></label>{% endfor %}
+<label>Your email or mobile number</label><input name="principal_ref" required autocomplete="email">
+<div style="margin-top:14px"><button>Save my choices</button></div></form></div>{% endif %}{% endblock %}

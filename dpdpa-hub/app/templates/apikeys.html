@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block body %}<h1>API keys</h1><p class="sub">Used by your booking system or CRM to record and check consent. Keys are stored only as hashes; copy a new key now, it cannot be shown again.</p>
+{% if shown %}<div class="flash ok"><b>New key (copy it now):</b><br><code>{{ shown }}</code></div>{% endif %}
+<form method="post" class="bar card"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="create"><input name="name" placeholder="Key name, e.g. Booking system" required><button class="btn">Create key</button></form>
+<div class="wrap"><table><tr><th>Name</th><th>Prefix</th><th>Created</th><th>Last used</th><th>Status</th><th></th></tr>
+{% for k in keys %}<tr><td>{{ k.name }}</td><td>{{ k.prefix }}…</td><td>{{ fmt_ist(k.created_at) }}</td><td>{{ fmt_ist(k.last_used) if k.last_used else 'never' }}</td><td>{{ 'Active' if k.active else 'Revoked' }}</td>
+<td>{% if k.active %}<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="revoke"><input type="hidden" name="id" value="{{ k.id }}"><button class="btn alt">Revoke</button></form>{% endif %}</td></tr>{% endfor %}</table></div>{% endblock %}
